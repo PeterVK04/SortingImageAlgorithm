@@ -42,26 +42,29 @@ class ImageSorterApp:
         self.quicksort_button.pack(pady=5)
 
     def load_image(self):
-        #open dialog
+        # Open dialog to select an image file
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.bmp")])
-        if not file_path: return
-        self.image_path = file_path
-        self.original_image = Image.open(self.image_path)
-        self.image_array = np.array(self.original_image)
-        #image load worked
+        if not file_path:  # If the user cancels the dialog
+            return
+
+        self.image_path = file_path  # Store the selected file path
+        self.original_image = cv2.imread(self.image_path)  # Read the image using OpenCV
+        if self.original_image is None:  # If OpenCV fails to read the image
+            messagebox.showerror("Error", "Unable to load image. Please select a valid image file.")
+            return
+
+        self.image_array = cv2.cvtColor(self.original_image, cv2.COLOR_BGR2RGB)  # Convert to RGB for PIL compatibility
         messagebox.showinfo("Image Loaded", "Image has been successfully loaded!")
 
     #this function isnt working rn
     def sort_and_display(self, algorithm):
-        if self.image_array == None:
+        if self.image_array is None:
             messagebox.showerror("Error", "No image loaded! Please select an image first.")
             return
         #put syeds code here for scrambling the image and then add sort_image function call. MAKE SURE TO DISPLAY UNSORTED IMAGE FIRST
         # read the image and save it and then the .image function from the numpy library gets the height and width in pixels
-        image = cv2.imread("gator.png")
-        if image is None:
-            print("Error: Unable to load image. Please check the file path.")
-            exit(1)
+        image = cv2.imread(f"{self.image_path}")
+
 
         height, width, _ = image.shape
         # This creates a dictionary where each key represents a column index
