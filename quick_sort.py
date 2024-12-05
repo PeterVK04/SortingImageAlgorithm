@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import random
 
+#we were having issues with the images blowing up way too big for no reason so made this to fix it
 def scale_to_fit(image, max_width=1920, max_height=1080):
     #used for scaling so that the image isn't blown up too wide
     h, w = image.shape[:2]
@@ -21,7 +22,8 @@ def partition(arr, low, high, img_dict, img_win, delay):
 
             #update the displayed image
             updated_image = np.hstack([img_dict[index] for index in arr])
-            scaled_image = scale_to_fit(updated_image)  # Scale to fit screen
+
+            scaled_image = scale_to_fit(updated_image)  #scale to fit screen
             cv2.imshow(img_win, scaled_image)
 
             if cv2.waitKey(delay) == 27:  #escape key to break early
@@ -31,7 +33,7 @@ def partition(arr, low, high, img_dict, img_win, delay):
 
     # Update the displayed image
     updated_image = np.hstack([img_dict[index] for index in arr])
-    scaled_image = scale_to_fit(updated_image)  # Scale to fit screen
+    scaled_image = scale_to_fit(updated_image)  #scale to fit screen
     cv2.imshow(img_win, scaled_image)
 
     if cv2.waitKey(delay) == 27:  #escape key to break early
@@ -44,7 +46,7 @@ def quick_sort(arr, low, high, img_dict, img_win, delay):
         #pass all required arguments to partition
         pi = partition(arr, low, high, img_dict, img_win, delay)
 
-        #recursive calls
+        #recursive calls (on left and right sub arrays to pivot)
         quick_sort(arr, low, pi - 1, img_dict, img_win, delay)
         quick_sort(arr, pi + 1, high, img_dict, img_win, delay)
 

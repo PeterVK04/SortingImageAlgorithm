@@ -42,7 +42,7 @@ class ImageSorterApp:
         self.quicksort_button.pack(pady=5)
 
     def load_image(self):
-        # Open dialog to select an image file
+        #open dialog to select an image file
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.bmp")])
         if not file_path:  # If the user cancels the dialog
             return
@@ -62,31 +62,31 @@ class ImageSorterApp:
             messagebox.showerror("Error", "No image loaded! Please select an image first.")
             return
         #put syeds code here for scrambling the image and then add sort_image function call. MAKE SURE TO DISPLAY UNSORTED IMAGE FIRST
-        # read the image and save it and then the .image function from the numpy library gets the height and width in pixels
+        #read the image and save it and then the .image function from the numpy library gets the height and width in pixels
         image = cv2.imread(f"{self.image_path}")
 
 
         height, width, _ = image.shape
-        # This creates a dictionary where each key represents a column index
-        # each value is an array of arrays of the rgb col values
+        #this creates a dictioanry where each key represents a column index
+        #each value is an arrray of arrays of the rgb col values
         column_slices = {i: image[:, i] for i in range(width)}
 
-        # This takes the keys of the dictionary and puts them into a list
+        #this takes the keys of the dictionary and puts them into a list
         index_list = list(column_slices.keys())
 
-        # This randomizes the indices for each column index of the image
+        #this randomizes the indices for each column index of the image
         random.shuffle(index_list)
 
-        # This uses hstack to combine columns together from the dictionary of column slices
-        # It loops through each index in the random index list and then takes the column value from the corresponding
-        # key in the dictionary and then horizontally combines them into a 2d array to represent the shuffled image
+        #this uses hstack to combine columns together from the dictionary of column slices
+        #it loops through each index in the random index list and then takes the column value from the corresponding
+        #key in the dictionary and then horizontally combines them into a 2d array to represent the shuffled image
         shuffled_img = np.hstack([column_slices[index] for index in index_list])
         shuffled_img_scaled = scale_to_fit(shuffled_img)  # Scale the shuffled image
-        # This displays the shuffled image in a window called image and waits for a key to be pressed
+        #this displays the shuffled image in a window called image and waits for a key to be pressed
         cv2.imshow('image', shuffled_img_scaled)
         cv2.waitKey(0)
 
-        # sorted_img = shuffled_img.copy()
+        #sorted_img = shuffled_img.copy()
         if algorithm == "QuickSort":
             quick_sort(index_list, 0, len(index_list) - 1, column_slices, 'image', 1)
         else:
