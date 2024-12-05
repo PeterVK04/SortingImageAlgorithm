@@ -57,39 +57,3 @@ def merge_sort(arr, left, right, image_arr, img_dict, img_win, delay):
 
         # Merge the sorted subarrays together
         merge(arr, left, mid, right, image_arr, img_dict, img_win, delay)
-
-
-# Read the image and save it and then the .image function from the numpy library gets the height and width in pixels
-image = cv2.imread("../gator.png")
-height, width, _ = image.shape
-
-# This creates a dictionary where each key represents a column index
-# each value is an array of arrays of the rgb col values
-column_slices = {i: image[:, i] for i in range(width)}
-
-# This takes the keys of the dictionary and puts them into a list
-index_list = list(column_slices.keys())
-
-# This randomizes the indices for each column index of the image
-random.shuffle(index_list)
-
-# This uses hstack to combine columns together from the dictionary of column slices
-# It loops through each index in the random index list and then takes the column value from the corresponding
-# key in the dictionary and then horizontally combines them into a 2d array to represent the shuffled image
-shuffled_img = np.hstack([column_slices[index] for index in index_list])
-
-# This displays the shuffled image in a window called image and waits for a key to be pressed
-cv2.imshow('image', shuffled_img)
-cv2.waitKey(0)
-
-
-sorted_img = shuffled_img.copy()
-
-merge_sort(index_list, 0, len(index_list) - 1, sorted_img, column_slices,'image', 1)
-
-
-cv2.imshow('image', sorted_img)
-
-cv2.waitKey(0)
-
-cv2.destroyAllWindows()
